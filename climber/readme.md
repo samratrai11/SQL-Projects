@@ -13,6 +13,7 @@ Overview:
 	o	The dataset is created in MYSQL and Excel for a better understanding.
 
 Code:
+
 -- Create new database 
 
 create database scratch
