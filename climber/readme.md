@@ -2,15 +2,15 @@ Overview:
 
 •	Dataset used: Created dataset manually from scratch. Created a dataset which represents a wall climbing gym which is named Climber. There are four total tables in the dataset.
 
-o	The first table consists of gold_user_signup which explains which users are gold. Gold users get personal trainers and free climbing gear/equipment.
+	o	The first table consists of gold_user_signup which explains which users are gold. Gold users get personal trainers and free climbing gear/equipment.
 
-o	The second table consists of product which has 3 unique product packages where p1 is the annual membership, p2 is a quarterly membership and p3 is a monthly membership.
+	o	The second table consists of product which has 3 unique product packages where p1 is the annual membership, p2 is a quarterly membership and p3 is a monthly membership.
 
-o	The third table consists of the types of user IDs and the signup date.
+	o	The third table consists of the types of user IDs and the signup date.
 
-o	The fourth table consists of the sales where user ID, product ID and created date are made. 
+	o	The fourth table consists of the sales where user ID, product ID and created date are made. 
 
-o	The dataset is created in MYSQL and Excel for a better understanding.
+	o	The dataset is created in MYSQL and Excel for a better understanding.
 
 Code:
 -- Create new database 
