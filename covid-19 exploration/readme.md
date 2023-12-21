@@ -34,9 +34,13 @@ order by 1,2
 -- specific country's death percentage, total deaths and total cases:
 
 select location, date, total_cases,total_deaths,
+
 (total_deaths/total_cases)*100 as DeathPercentage
+
 from Project1.coviddeaths
+
 where location like '%united kingdom%'
+
 order by 1,2
 
 •	key insights: this query retrieves data for the United Kingdom from the coviddeaths table, calculates the death percentage, and orders the result set by location and date.
