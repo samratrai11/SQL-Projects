@@ -10,7 +10,9 @@ MYSQL CODE AND SUMMARY:
 -- Selection of COVID deaths table
 
 select * from
+
 Project1.coviddeaths
+
 order by 3,4
 
 key insights:
@@ -21,12 +23,15 @@ key insights:
 -- Selection of COVID vaccine table
 
 SELECT * from Project1.covidvacc
+
 order by 3,4
 
 -- looking at total 
 
 select location, date, total_cases, new_cases,total_deaths,population
+
 from Project1.coviddeaths
+
 order by 1,2
 
 •	key insights: the query retrieves specific columns from the coviddeaths table and orders the results first by location and then by date.
@@ -50,8 +55,11 @@ order by 1,2
 -- calculation of total cases and death percentage of population of a specific country:
 
 select location, date, total_cases,population, (total_cases/population)*100 as DeathPercentage
+
 from Project1.coviddeaths
+
 where location like '%kingdom%'
+
 order by 1,2
 
 key insights:
@@ -60,8 +68,11 @@ key insights:
 -- calculation of highestinfectioncount, percentpopulationinfected in relation to location:
 
 select location,population, MAX(total_cases) as highestinfectioncount, MAX((total_cases/population))*100 as PercentPopulationInfected
+
 from Project1.coviddeaths
+
 group by location, population
+
 order by PercentPopulationInfected desc
 
 key insights:
@@ -72,9 +83,13 @@ key insights:
 -- showing countries with highest death count per population:
 
 select location, MAX(CAST(total_deaths as signed)) as totaldeathcount
+
 from Project1.coviddeaths
+
 where continent is not null
+
 group by location
+
 order by totaldeathcount desc
 
 key insights:
@@ -85,9 +100,13 @@ key insights:
 -- Showing continents with the highest death count 
 
 Select continent, MAX(cast(Total_deaths as signed)) as TotalDeathCount
+
 From Project1.coviddeaths
+
 Where continent is not null 
+
 Group by continent
+
 order by TotalDeathCount desc
 
 key insights:
@@ -96,10 +115,15 @@ key insights:
 -- global numbers
 
 Select date, sum(new_cases) as TotalCases, sum(cast(new_deaths as signed)) as TotalDeaths,
+
 sum(cast(new_deaths as signed))/sum(new_cases)*100 as DeathPercentage
+
 From Project1.coviddeaths
+
 Where continent is not null 
+
 Group by date
+
 order by 1,2 desc
 
 key insights:
@@ -113,9 +137,13 @@ key insights:
 -- Overall deathpercentage of the world
 
 Select sum(new_cases) as TotalCases, sum(cast(new_deaths as signed)) as TotalDeaths,
+
 sum(cast(new_deaths as signed))/sum(new_cases)*100 as DeathPercentage
+
 From Project1.coviddeaths
+
 Where continent is not null 
+
 order by 1,2 desc
 
 key insights:
@@ -123,8 +151,11 @@ key insights:
 
 -- join the tables
 select * from Project1.coviddeaths dea
+
 join Project1.covidvacc vacc
+
 on dea.location = vacc.location
+
 and dea.date = vacc.date
 
 key insights:
@@ -135,11 +166,17 @@ key insights:
 
 -- Total Population vs vaccinations
 select dea.continent, dea.location, dea.date, dea.population, vacc.new_vaccinations
+
 from Project1.coviddeaths dea
+
 join Project1.covidvacc vacc
+
 on dea.location = vacc.location
+
 and dea.date = vacc.date
+
 where dea.continent is not null
+
 order by 2,3 
 
 key insights:
@@ -177,31 +214,44 @@ key insights:
 
 
 -- total cases of covid-19
-SELECT COUNT(*) AS total_cases FROM Project1.coviddeaths;
+
+SELECT COUNT(*) AS total_cases 
+
+FROM Project1.coviddeaths;
 
 -- date of the dataset
-SELECT MAX(date) AS latest_date, MIN(date) AS earliest_date FROM Project1.coviddeaths;
+
+SELECT MAX(date) AS latest_date, MIN(date) AS earliest_date 
+
+FROM Project1.coviddeaths;
 
 -- calculation of total cases, deaths, and recoveries for a specific country 
 SELECT
     SUM(total_cases) AS TotalCases,
     SUM(total_deaths) AS TotalDeaths,
     SUM(reproduction_rate) AS ReproductionRate
+
 FROM Project1.coviddeaths
+
 where continent is not null
+
 and location = 'united kingdom';
 
 key insights:
 •	The query calculates and returns the total number of cases, total number of deaths, and the sum of reproduction rates for the specified location ('united kingdom') from the coviddeaths table, considering only rows where the continent is not null.
 
 -- daily new cases and new deaths of covid-19 of a specified country
+
 SELECT
     date,
     location,
     total_cases - LAG(total_cases) OVER (PARTITION BY location ORDER BY date) AS new_cases,
     total_deaths - LAG(total_deaths) OVER (PARTITION BY location ORDER BY date) AS new_deaths
+
 FROM Project1.coviddeaths
+
 WHERE location = 'United Kingdom'
+
 ORDER BY date;
 
 Key insights:
@@ -210,11 +260,15 @@ Key insights:
 •	The query provides a result set that includes the date, location ('United Kingdom'), and the calculated new cases and new deaths for each day based on the total cases and total deaths in the 'United Kingdom' from the coviddeaths table.
 
 -- Top countries with the highest mortality rates (deaths per cases):
+
 SELECT
     location,
     MAX(total_deaths / total_cases) AS mortality_rate
+
 FROM Project1.coviddeaths
+
 GROUP BY location
+
 ORDER BY mortality_rate DESC;
 
 Key insights:
@@ -222,6 +276,7 @@ Key insights:
 •	This query provides a result set that includes each unique location, along with the maximum mortality rate calculated as the maximum value of the ratio of total deaths to total cases. The result set is ordered by the calculated mortality rate in descending order.
 
 -- daily growth rate of total cases and total deaths for a specific country 
+
 SELECT
     date,
     location,
@@ -229,8 +284,11 @@ SELECT
     total_deaths,
     (total_cases - LAG(total_cases) OVER (PARTITION BY location ORDER BY date)) / LAG(total_cases) OVER (PARTITION BY location ORDER BY date) AS cases_growth_rate,
     (total_deaths - LAG(total_deaths) OVER (PARTITION BY location ORDER BY date)) / LAG(total_deaths) OVER (PARTITION BY location ORDER BY date) AS deaths_growth_rate
+
 FROM Project1.coviddeaths
+
 WHERE location = 'united kingdom'
+
 ORDER BY date;
 
 Key insights:
@@ -241,15 +299,20 @@ Key insights:
 
 
 -- daily growth rate of new cases and new deaths for a specific country 
+
 SELECT
     date,
     location,
     new_cases,
     new_deaths,
     (new_cases - LAG(new_cases) OVER (PARTITION BY location ORDER BY date)) / LAG(new_cases) OVER (PARTITION BY location ORDER BY date) AS cases_growth_rate,
-    (new_deaths - LAG(new_deaths) OVER (PARTITION BY location ORDER BY date)) / LAG(new_deaths) OVER (PARTITION BY location ORDER BY date) AS deaths_growth_rate
+    (new_deaths - LAG(new_deaths) OVER (PARTITION BY location ORDER BY date)) / LAG(new_deaths) OVER (PARTITION 
+BY location ORDER BY date) AS deaths_growth_rate
+
 FROM Project1.coviddeaths
+
 WHERE location = 'united kingdom'
+
 ORDER BY date;
 
 Key insights:
